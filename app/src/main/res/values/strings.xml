@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Checkers</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world, G!</string>
+    <string name="button">Button</string>
+
+    <string name="todo">TODO</string>
+    <string name="new_game">New Game</string>
+    <string name="exit">Exit</string>
+    <string name="new_battle">new battle</string>
+    <string name="new_battle1">New Battle</string>
+    <string name="leave">Leave</string>
+</resources>
