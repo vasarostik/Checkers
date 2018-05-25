@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/bg5">
 
     <Button
         android:id="@+id/leave"
@@ -29,7 +29,7 @@
         android:layout_height="530dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/board2e"
+        android:background="@drawable/board4e"
         android:gravity="center"
         android:horizontalSpacing="0dp"
 

@@ -17,8 +17,12 @@ public class CheckersPosition {
     public void position_parse(String st) {
       row = 8 - (st.charAt(1) - '0');
       col = st.charAt(0) - 'A';
-      return;
+      return ;
   }
+ // public void position_hardcor(String st){
+   //     row =
+     //   return;
+  //}
     
     
 }

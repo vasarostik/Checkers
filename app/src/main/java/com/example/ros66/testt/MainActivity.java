@@ -2,7 +2,6 @@ package com.example.ros66.testt;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -10,46 +9,33 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
+import com.google.gson.Gson;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import okhttp3.Request;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    private static String url = "https://api.androidhive.info/contacts/";
+
 
 
 	int switcher = 1;
+	int iter = 1;
 	String click_move = "empty";
 	GridView gridView;
 	CheckersBoard cb = new CheckersBoard();
+	String ros="";
+    String resultCount;
+    String result2;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        ArrayList contactList = new ArrayList<>();
+
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -62,28 +48,51 @@ public class MainActivity extends Activity {
 
 
 
-		setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
 
-		//
 		// JsonObjectRequest.java
-		String URL ="https://api.myjson.com/bins/7tghr";
+		String URL ="https://a24a1a64-9276-4e9d-9ed2-cb80d602a4af.mock.pstmn.io/";
 		RequestQueue queue1 = Volley.newRequestQueue(this);
+		//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 		JsonObjectRequest request1 = new JsonObjectRequest(
+
 				URL,
 				null,
 				new com.android.volley.Response.Listener<JSONObject>() {
-					@Override
-					public void onResponse(JSONObject response) {
-					    try{
-                            JSONArray g = response.getJSONArray("contacts");
-                            Log.i("Response: ",g.toString());
-                        }
-                        catch (JSONException e){
 
+
+
+					@Override
+                    public void onResponse(JSONObject response) {
+                        if (response != null) {
+                            resultCount = response.optString("arr1");
+                            result2 = response.optString("arr2");
+							Log.i("arr1", resultCount);
+                            Log.i("arr2", result2);
+                           /* int resultCount = response.optInt("resultCount");
+                            if (resultCount > 0) {
+                                Gson gson = new Gson();
+                                JSONArray jsonArray = response.optJSONArray("results");
+                                if (jsonArray != null) {
+
+                                    SongInfo[] songs = gson.fromJson(jsonArray.toString(), SongInfo[].class);
+                                    if (songs != null && songs.length > 0) {
+                                        for (SongInfo song : songs) {
+                                            Log.i("LOG", song.kind);
+                                            if(!(song.trackName.isEmpty())){
+                                            setRos(song.trackName); }
+
+                                            Log.i("DOOOO", getRos());
+ // somewhere here must be a await
+
+                                        }
+                                    }
+                                }
+                            }*/
                         }
-					}
-				},
+                    }
+                },
 				new com.android.volley.Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
@@ -94,28 +103,19 @@ public class MainActivity extends Activity {
 
 		);
 		queue1.add(request1);
-//
+		queue1.start();
+        Log.i("hello","Rostik!");
 
 
 
-
-
-
-
-
-
-
-
-
-
-		CheckersPiece all_pieces[] = new CheckersPiece[24];
+        CheckersPiece all_pieces[] = new CheckersPiece[24];
 		for (int i = 0; i < 12; i++) {
 			all_pieces[i] = cb.dark_pieces[i];
 			all_pieces[i+12] = cb.light_pieces[i];
 		}
-		String myvec[] = new String[64];
+		String myvec[];
 		myvec = cb.vec_string();
-		gridView = (GridView) findViewById(R.id.gridview);
+		gridView = findViewById(R.id.gridview);
 		gridView.setAdapter(new ImageAdapter(this, myvec));
 		Context context = getApplicationContext();
 		CharSequence text = "White Player starts!";
@@ -124,68 +124,101 @@ public class MainActivity extends Activity {
 		toast.show();
 	}
 
+    public String getRos() {
+        return ros;
+    }
 
+    public void setRos(String ros) {
+        this.ros = ros;
+    }
 
-
-
-
-
-
-
-
-
-	
-	public void pressed(View view) {
+    public void pressed(View view) {
 		System.out.println("pressed");
-		EditText e = (EditText) findViewById(R.id.editText1);
+		EditText e = findViewById(R.id.editText1);
 		System.out.println(e.getText().toString());
 		if (e.getText().toString().length() >= 1) {
+
 			CheckersMove cm = new CheckersMove(e.getText().toString());
+
+
+
+
 			cb.board_move_and_capture(cm);
-			String myvec[] = new String[64];
+			String myvec[];
 			myvec = cb.vec_string();
-			gridView = (GridView) findViewById(R.id.gridview);
+			gridView = findViewById(R.id.gridview);
 			gridView.setAdapter(new ImageAdapter(this, myvec));
 		}
 	}
-	
+
 	public void image_pressed(View view) {
-		String s = new String();
+		String s;
+
+		//Hardcode for presentation
+		/*	 if(iter==1)
+		s = "B6";
+		else if(iter==2)
+			s = "C5";
+		else if(iter ==5)
+			s="C5";
+		else if(iter ==6)
+            s="A3";
+
+		else
+		s = (String) view.getTag();*/
+
+		//hardcode
+        if(iter==1)
+            s = resultCount;
+        else if(iter==2)
+            s = result2;
+        else
 		s = (String) view.getTag();
+
 		System.out.println(s);
 		if (switcher == 1) {
 			System.out.println(s);
 			CheckersPosition cp = new CheckersPosition();
 			cp.position_parse(s);
-			CheckersPiece pp = new CheckersPiece();
+
+            Log.i("YORKSHIRE",getRos()+"DOne");
+			CheckersPiece pp;
 			pp = cb.board_get_piece_at(cp.row, cp.col);
 			if (cb.turn == 1) {
-				if (pp.toString().equals("w")) {
-					click_move = s;
-					switcher = -1;
-				} else if (pp.toString().equals("W")) {
-					click_move = s;
-					switcher = -1;
-				} else {
-					Context context = getApplicationContext();
-					CharSequence text = "White Player's turn!";
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+				switch (pp.toString()) {
+					case "w":
+						click_move = s;
+						switcher = -1;
+						break;
+					case "W":
+						click_move = s;
+						switcher = -1;
+						break;
+					default:
+						Context context = getApplicationContext();
+						CharSequence text = "White Player's turn!";
+						int duration = Toast.LENGTH_SHORT;
+						Toast toast = Toast.makeText(context, text, duration);
+						toast.show();
+						break;
 				}
 			} else {
-				if (pp.toString().equals("b")) {
-					click_move = s;
-					switcher = -1;
-				} else if (pp.toString().equals("B")) {
-					click_move = s;
-					switcher = -1;
-				} else {
-					Context context = getApplicationContext();
-					CharSequence text = "Black Player's turn!";
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+				switch (pp.toString()) {
+					case "b":
+						click_move = s;
+						switcher = -1;
+						break;
+					case "B":
+						click_move = s;
+						switcher = -1;
+						break;
+					default:
+						Context context = getApplicationContext();
+						CharSequence text = "Black Player's turn!";
+						int duration = Toast.LENGTH_SHORT;
+						Toast toast = Toast.makeText(context, text, duration);
+						toast.show();
+						break;
 				}
 			}
 		} else {
@@ -201,20 +234,35 @@ public class MainActivity extends Activity {
 				click_move = "";
 				switcher = 1;
 			} else {
-				String myvec[] = new String[64];
+				String myvec[];
 				myvec = cb.vec_string();
-				gridView = (GridView) findViewById(R.id.gridview);
+				gridView = findViewById(R.id.gridview);
 				gridView.setAdapter(new ImageAdapter(this, myvec));
 				switcher = 1;
 				click_move = "";
 				cb.board_print();
 			}
 		}
+		iter++;
 	}
 	public void leave(View view)
 	{
 		this.finish();
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -160,9 +160,9 @@ public class CheckersBoard {
 
     public CheckersPiece board_get_piece_at(int r, int c) {
         for (int i = 0; i < 12; i++) {
-            if (light_pieces[i].position.col == c && light_pieces[i].position.row == r) {
+          if (light_pieces[i].position.col == c && light_pieces[i].position.row == r) {
                 return light_pieces[i];
-            }  
+            }
         }
         for (int i = 0; i < 12; i++) {
             if (dark_pieces[i].position.col == c && dark_pieces[i].position.row == r) {
