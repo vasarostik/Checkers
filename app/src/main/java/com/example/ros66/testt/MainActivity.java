@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 
 
 		// JsonObjectRequest.java
-		String URL ="https://a24a1a64-9276-4e9d-9ed2-cb80d602a4af.mock.pstmn.io/";
+		String URL ="https://ba0818f3-9da6-4a47-a54e-67951fc06e75.mock.pstmn.io/move";
 		RequestQueue queue1 = Volley.newRequestQueue(this);
 		//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 		JsonObjectRequest request1 = new JsonObjectRequest(
@@ -66,10 +66,10 @@ public class MainActivity extends Activity {
 					@Override
                     public void onResponse(JSONObject response) {
                         if (response != null) {
-                            resultCount = response.optString("arr1");
-                            result2 = response.optString("arr2");
-							Log.i("arr1", resultCount);
-                            Log.i("arr2", result2);
+                            resultCount = response.optString("from");
+                            result2 = response.optString("to");
+							Log.i("from: ", resultCount);
+                            Log.i("to: ", result2);
                            /* int resultCount = response.optInt("resultCount");
                             if (resultCount > 0) {
                                 Gson gson = new Gson();
