@@ -23,15 +23,11 @@ import org.json.JSONObject;
 public class MainActivity extends Activity {
 
 
-
-	int switcher = 1;
-	int iter = 1;
-	String click_move = "empty";
 	GridView gridView;
 	CheckersBoard cb = new CheckersBoard();
-	String ros="";
-    String resultCount;
-    String result2;
+    String capturedCheckerPosition;
+	int checkerIsCaptured = 0;
+	int hardCodedServerMove = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,66 +42,7 @@ public class MainActivity extends Activity {
 		System.out.println(w);
 		super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_main);
-
-
-		// JsonObjectRequest.java
-		String URL ="https://ba0818f3-9da6-4a47-a54e-67951fc06e75.mock.pstmn.io/move";
-		RequestQueue queue1 = Volley.newRequestQueue(this);
-		//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-		JsonObjectRequest request1 = new JsonObjectRequest(
-
-				URL,
-				null,
-				new com.android.volley.Response.Listener<JSONObject>() {
-
-
-
-					@Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            resultCount = response.optString("from");
-                            result2 = response.optString("to");
-							Log.i("from: ", resultCount);
-                            Log.i("to: ", result2);
-                           /* int resultCount = response.optInt("resultCount");
-                            if (resultCount > 0) {
-                                Gson gson = new Gson();
-                                JSONArray jsonArray = response.optJSONArray("results");
-                                if (jsonArray != null) {
-
-                                    SongInfo[] songs = gson.fromJson(jsonArray.toString(), SongInfo[].class);
-                                    if (songs != null && songs.length > 0) {
-                                        for (SongInfo song : songs) {
-                                            Log.i("LOG", song.kind);
-                                            if(!(song.trackName.isEmpty())){
-                                            setRos(song.trackName); }
-
-                                            Log.i("DOOOO", getRos());
- // somewhere here must be a await
-
-                                        }
-                                    }
-                                }
-                            }*/
-                        }
-                    }
-                },
-				new com.android.volley.Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.i("ResponseError: ", error.toString());
-					}
-				}
-
-
-		);
-		queue1.add(request1);
-		queue1.start();
-        Log.i("hello","Rostik!");
-
 
 
         CheckersPiece all_pieces[] = new CheckersPiece[24];
@@ -124,14 +61,6 @@ public class MainActivity extends Activity {
 		toast.show();
 	}
 
-    public String getRos() {
-        return ros;
-    }
-
-    public void setRos(String ros) {
-        this.ros = ros;
-    }
-
     public void pressed(View view) {
 		System.out.println("pressed");
 		EditText e = findViewById(R.id.editText1);
@@ -139,9 +68,6 @@ public class MainActivity extends Activity {
 		if (e.getText().toString().length() >= 1) {
 
 			CheckersMove cm = new CheckersMove(e.getText().toString());
-
-
-
 
 			cb.board_move_and_capture(cm);
 			String myvec[];
@@ -151,121 +77,70 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	public void moveCheckerOnBoard(String fromPosition, String toPosition) {
+		String move = fromPosition + "-" + toPosition;
+		// Add the move validation functionality
+		int moveStatus = cb.board_move_and_capture(new CheckersMove(move));
+		String boardPositions[];
+		boardPositions = cb.vec_string();
+		gridView = findViewById(R.id.gridview);
+		gridView.setAdapter(new ImageAdapter(this, boardPositions));
+		cb.board_print();
+
+	}
+
 	public void image_pressed(View view) {
-		String s;
 
-		//Hardcode for presentation
-		/*	 if(iter==1)
-		s = "B6";
-		else if(iter==2)
-			s = "C5";
-		else if(iter ==5)
-			s="C5";
-		else if(iter ==6)
-            s="A3";
-
-		else
-		s = (String) view.getTag();*/
-
-		//hardcode
-        if(iter==1)
-            s = resultCount;
-        else if(iter==2)
-            s = result2;
-        else
-		s = (String) view.getTag();
-
-		System.out.println(s);
-		if (switcher == 1) {
-			System.out.println(s);
-			CheckersPosition cp = new CheckersPosition();
-			cp.position_parse(s);
-
-            Log.i("YORKSHIRE",getRos()+"DOne");
-			CheckersPiece pp;
-			pp = cb.board_get_piece_at(cp.row, cp.col);
-			if (cb.turn == 1) {
-				switch (pp.toString()) {
-					case "w":
-						click_move = s;
-						switcher = -1;
-						break;
-					case "W":
-						click_move = s;
-						switcher = -1;
-						break;
-					default:
-						Context context = getApplicationContext();
-						CharSequence text = "White Player's turn!";
-						int duration = Toast.LENGTH_SHORT;
-						Toast toast = Toast.makeText(context, text, duration);
-						toast.show();
-						break;
-				}
-			} else {
-				switch (pp.toString()) {
-					case "b":
-						click_move = s;
-						switcher = -1;
-						break;
-					case "B":
-						click_move = s;
-						switcher = -1;
-						break;
-					default:
-						Context context = getApplicationContext();
-						CharSequence text = "Black Player's turn!";
-						int duration = Toast.LENGTH_SHORT;
-						Toast toast = Toast.makeText(context, text, duration);
-						toast.show();
-						break;
-				}
-			}
+		if (checkerIsCaptured == 0) {
+			capturedCheckerPosition = (String) view.getTag();
+			checkerIsCaptured = 1;
 		} else {
-			click_move = click_move + "-" + s;
-			System.out.println(click_move);
-			int j = cb.board_move_and_capture(new CheckersMove(click_move));
-			if (j == -1) {
-				Context context = getApplicationContext();
-				CharSequence text = "Invalid Move, try again!";
-				int duration = Toast.LENGTH_SHORT;
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
-				click_move = "";
-				switcher = 1;
-			} else {
-				String myvec[];
-				myvec = cb.vec_string();
-				gridView = findViewById(R.id.gridview);
-				gridView.setAdapter(new ImageAdapter(this, myvec));
-				switcher = 1;
-				click_move = "";
-				cb.board_print();
-			}
+			moveCheckerOnBoard(capturedCheckerPosition, (String) view.getTag());
+			checkerIsCaptured = 0;
+			// JsonObjectRequest.java
+			String URL ="https://robo-hand.appspot.com/move?number=" + String.valueOf(hardCodedServerMove);
+			System.out.println(URL);
+			hardCodedServerMove = hardCodedServerMove + 1;
+			RequestQueue queue = Volley.newRequestQueue(this);
+			//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+			JsonObjectRequest request = new JsonObjectRequest(
+
+					URL,
+					null,
+					new com.android.volley.Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+							if (response != null) {
+								String status = response.optString("status");
+								if (status.isEmpty()) {
+									String fromPosition = response.optString("from");
+									String toPosition = response.optString("to");
+									moveCheckerOnBoard(fromPosition, toPosition);
+								} else {
+									// Show the return to menu screen
+									System.out.println("status: " + status);
+								}
+
+							}
+						}
+					},
+					new com.android.volley.Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.i("ResponseError: ", error.toString());
+						}
+					}
+
+			);
+			queue.add(request);
+			queue.start();
+
 		}
-		iter++;
+
 	}
 	public void leave(View view)
 	{
 		this.finish();
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 }
