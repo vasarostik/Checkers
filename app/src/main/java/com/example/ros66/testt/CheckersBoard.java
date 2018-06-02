@@ -17,33 +17,9 @@ public class CheckersBoard {
 	    return longer;
 	}
     
-    public static CheckersPiece[] push_back(CheckersPiece[] array, CheckersPiece push) {
-    	int count = 0;
-    	for (CheckersPiece x : array) {
-    		count++;
-    	}
-    	CheckersPiece[] longer = new CheckersPiece[count + 1];
-	    for (int i = 0; i < count; i++)
-	        longer[i] = array[i];
-	    longer[count] = push;
-	    return longer;
-	}
+
     
-    public String[] string_split(String st1, char c) {
-        String st_temp = "";
-        String st_blank = "";
-        String[] v = new String[0];
-        for (int i = 0; i < st1.length(); i++) {
-            if (st1.charAt(i) != c) {
-                st_temp = st_temp + st1.charAt(i);
-            } else {
-                v = push_back(v, st_temp);
-                st_temp = st_blank;
-            }
-        }
-        v = push_back(v, st_temp);
-        return v;
-    }
+   
     public CheckersBoard() {
     	int a = 0;
         int odds = 1;
