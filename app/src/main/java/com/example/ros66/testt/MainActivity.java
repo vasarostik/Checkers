@@ -16,11 +16,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public class MainActivity extends Activity {
@@ -92,7 +91,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void image_pressed(View view) {
+	public void image_pressed(View view) throws UnsupportedEncodingException {
 
 		if (checkerIsCaptured == 0) {
 			capturedCheckerPosition = (String) view.getTag();
@@ -101,7 +100,7 @@ public class MainActivity extends Activity {
 			moveCheckerOnBoard(capturedCheckerPosition, (String) view.getTag());
 			checkerIsCaptured = 0;
 			// JsonObjectRequest.java
-			String URL ="http://ec2-52-91-220-231.compute-1.amazonaws.com:8000/move?board=" + String.valueOf(CheckersBoard.board_hash);
+			String URL ="http://ec2-52-91-220-231.compute-1.amazonaws.com:8000/move?board=" + URLEncoder.encode(CheckersBoard.board_hash, "UTF-8");
 			System.out.println(URL);
 
 			RequestQueue queue = Volley.newRequestQueue(this);

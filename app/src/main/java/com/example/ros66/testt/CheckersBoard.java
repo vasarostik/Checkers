@@ -99,66 +99,7 @@ public class CheckersBoard {
         turn = 1;
     }
     
-    
-    public CheckersBoard(String st1, String st2) {
-        none_piece.position.row = -1;
-        none_piece.position.col = -1;
-        turn = 1;
-        String[] darks = string_split(st1, ',');
-        String[] lights = string_split(st2, ',');
-        CheckersPiece[] v_cp_dark = new CheckersPiece[0];
-        CheckersPiece[] v_cp_light = new CheckersPiece[0];
-        int count_darks = 0;
-        int count_lights = 0;
-        
-        for (String s : darks) {
-            CheckersPiece cp = new CheckersPiece();
-            CheckersPosition p = new CheckersPosition();
-            p.position_parse(s);
-            int newr = p.row;
-            int newc = p.col;
-            cp.position.row = newr;
-            cp.position.col = newc;
-            v_cp_dark = push_back(v_cp_dark, cp);
-            count_darks++;
-        }
-        
-        for (String s : lights) {
-            CheckersPiece cp = new CheckersPiece();
-            CheckersPosition p = new CheckersPosition();
-            p.position_parse(s);
-            int newr = p.row;
-            int newc = p.col;
-            cp.position.row = newr;
-            cp.position.col = newc;
-            v_cp_light = push_back(v_cp_light, cp);
-            count_lights++;
-        }
-        
-        for (int i = 0; i < 12; i++) {
-            dark_pieces[i] = new CheckersPiece();
-            dark_pieces[i].position.col = -1;
-            dark_pieces[i].position.row = -1;
-            light_pieces[i] = new CheckersPiece();
-            light_pieces[i].position.col = -1;
-            light_pieces[i].position.row = -1;
-        }
-        
-        for (int i = 0; i < count_darks; i++) {
-            int rr = v_cp_dark[i].position.row;
-            int cc = v_cp_dark[i].position.col;
-            dark_pieces[i].position.row = rr;
-            dark_pieces[i].position.col = cc;
-            dark_pieces[i].dark = true;
-        }
-        
-        for (int i = 0; i < count_lights; i++) {
-            int rr = v_cp_light[i].position.row;
-            int cc = v_cp_light[i].position.col;
-            light_pieces[i].position.row = rr;
-            light_pieces[i].position.col = cc;
-        }
-    }
+
 
     public CheckersPiece board_get_piece_at(int r, int c) {
         for (int i = 0; i < 12; i++) {
@@ -169,7 +110,7 @@ public class CheckersBoard {
         for (int i = 0; i < 12; i++) {
             if (dark_pieces[i].position.col == c && dark_pieces[i].position.row == r) {
                 return dark_pieces[i];
-            }  
+            }
         }
         return none_piece;
     }
@@ -233,34 +174,8 @@ public class CheckersBoard {
         return str;
     }
     
-    
-    public void simple_move(CheckersSimpleMove smove) {
-        CheckersPiece cp = new CheckersPiece();
-        cp.position.row = smove.start.row;
-        cp.position.col = smove.start.col;
-        int r_old = cp.position.row;
-        int c_old = cp.position.col;
-        cp.position.row = smove.end.row;
-        cp.position.col = smove.end.col;
-        int r_new = cp.position.row;
-        int c_new = cp.position.col;
-        		
-        for (CheckersPiece cp1 : dark_pieces) {
-            if (r_old == cp1.position.row && 
-            c_old == cp1.position.col) {
-                cp1.position.row = r_new;
-                cp1.position.col = c_new;
-            }
-        }
-        for (CheckersPiece cp1 : light_pieces) {
-            if (r_old == cp1.position.row && 
-            c_old == cp1.position.col) {
-                cp1.position.row = r_new;
-                cp1.position.col = c_new;
-            }
-        }
-    return;
-    }
+
+
     
     public int board_move_and_capture(CheckersMove cm) {
     	if (this.validate(cm) == 0) {
