@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/backgr"
+    android:layout_height="match_parent"
+    >
+
+    <Button
+        android:id="@+id/leave"
+        android:layout_width="123dp"
+        android:layout_height="53dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="243dp"
+        android:background="@drawable/button_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="OnClick"
+        android:text="@string/play_with_ai"
+        android:textColor="@color/colorramka"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="123dp"
+        android:layout_height="53dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="147dp"
+        android:background="@drawable/button_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/multiplayer"
+        android:textColor="@color/colorramka"
+        android:textSize="15sp" />
+
+</RelativeLayout>

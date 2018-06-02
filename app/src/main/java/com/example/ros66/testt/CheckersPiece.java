@@ -46,20 +46,42 @@ public class CheckersPiece {
     }
     
     public void piece_print() {
+
         if (this.crowned == false) {
             if (this.dark == false) {
                 System.out.print("w");
+
             } else {
             	System.out.print("b");
             }
         } else {
             if (this.dark == false) {
             	System.out.print("W");
+
             } else {
             	System.out.print("B");
+
             }
         }
         return;
+    }
+
+    public char piece_set() {
+        char s;
+        if (this.crowned == false) {
+            if (this.dark == false) {
+                s='w';
+            } else {
+                s='b';
+            }
+        } else {
+            if (this.dark == false) {
+                s='W';
+            } else {
+                s='B';
+            }
+        }
+        return s;
     }
     
     public CheckersPosition[]

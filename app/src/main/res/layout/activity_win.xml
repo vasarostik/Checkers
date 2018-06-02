@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WinActivity"
+    android:background="@color/black_color">
+
+    <TextView
+        android:id="@+id/rooos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/cvcvc"
+        android:textColor="?android:attr/textColorSecondaryInverse"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="319dp" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp"
+        android:background="@drawable/button_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="Exit"
+        android:text="@string/menu"
+        android:textColor="@color/colorramka"
+        android:textSize="14sp"
+        tools:ignore="UnknownIdInLayout" />
+</RelativeLayout>

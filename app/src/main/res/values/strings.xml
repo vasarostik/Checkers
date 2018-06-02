@@ -12,4 +12,10 @@
     <string name="new_battle">new battle</string>
     <string name="new_battle1">New Battle</string>
     <string name="leave">Leave</string>
+    <string name="play_with_ai">Play with AI</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="title_activity_choise">ChoiseActivity</string>
+    <string name="back">Back</string>
+    <string name="cvcvc">cvcvc</string>
+    <string name="menu">menu</string>
 </resources>

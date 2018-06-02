@@ -5,24 +5,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class StartActivity extends AppCompatActivity {
+public class ChoiseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_choise);
 
     }
 
     public void OnClick(View v) {
-        Intent intent = new Intent(this, ChoiseActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         this.finish();
-    }
-    public void Exit(View view)
-    {
-        finish();
-        System.exit(0);
     }
 
 }

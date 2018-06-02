@@ -1,7 +1,10 @@
 package com.example.ros66.testt;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,12 +25,12 @@ import org.json.JSONObject;
 
 public class MainActivity extends Activity {
 
-
+	public static String status;
 	GridView gridView;
 	CheckersBoard cb = new CheckersBoard();
     String capturedCheckerPosition;
 	int checkerIsCaptured = 0;
-	int hardCodedServerMove = 0;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +101,9 @@ public class MainActivity extends Activity {
 			moveCheckerOnBoard(capturedCheckerPosition, (String) view.getTag());
 			checkerIsCaptured = 0;
 			// JsonObjectRequest.java
-			String URL ="https://robo-hand.appspot.com/move?number=" + String.valueOf(hardCodedServerMove);
+			String URL ="http://ec2-52-91-220-231.compute-1.amazonaws.com:8000/move?board=" + String.valueOf(CheckersBoard.board_hash);
 			System.out.println(URL);
-			hardCodedServerMove = hardCodedServerMove + 1;
+
 			RequestQueue queue = Volley.newRequestQueue(this);
 			//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 			JsonObjectRequest request = new JsonObjectRequest(
@@ -111,7 +114,7 @@ public class MainActivity extends Activity {
 						@Override
 						public void onResponse(JSONObject response) {
 							if (response != null) {
-								String status = response.optString("status");
+								status = response.optString("status");
 								if (status.isEmpty()) {
 									String fromPosition = response.optString("from");
 									String toPosition = response.optString("to");
@@ -119,6 +122,8 @@ public class MainActivity extends Activity {
 								} else {
 									// Show the return to menu screen
 									System.out.println("status: " + status);
+
+									winning();
 								}
 
 							}
@@ -140,7 +145,18 @@ public class MainActivity extends Activity {
 	}
 	public void leave(View view)
 	{
+		Intent intent = new Intent(this, StartActivity.class);
+		startActivity(intent);
 		this.finish();
 	}
-	
+
+	public void winning(){
+		Intent intent = new Intent(this, WinActivity.class);
+		startActivity(intent);
+		this.finish();
+	}
+
+
+
+
 }

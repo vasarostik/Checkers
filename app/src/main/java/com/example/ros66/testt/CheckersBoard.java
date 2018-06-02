@@ -5,7 +5,9 @@ public class CheckersBoard {
 	public CheckersPiece[] light_pieces = new CheckersPiece[12];
 	public CheckersPiece[] dark_pieces = new CheckersPiece[12];
     public CheckersPiece none_piece = new CheckersPiece();
+    public char[][] board_state = new char[8][8];
     public int turn;
+    public static String board_hash;
     
     public static String[] push_back(String[] array, String push) {
 	    String[] longer = new String[array.length + 1];
@@ -171,22 +173,49 @@ public class CheckersBoard {
         }
         return none_piece;
     }
-    
     public void board_print() {
         for (int r = 0; r < 8; r = r + 1) {
             System.out.print((8 - r) + (" "));
+
             for (int a = 0; a <= 7; a = a + 1) {
                 if (board_get_piece_at(r, a).position.col == 
                 -1 || board_get_piece_at(r, a).captured == true) {
                 	System.out.print(".");
+                	board_state[r][a] = '.';
                 } else {
                 	(board_get_piece_at(r, a)).piece_print();
+                    board_state[r][a] = board_get_piece_at(r, a).piece_set();
                 }
             }
             System.out.println("\n");
         }
         System.out.print("  ABCDEFGH");
+        board_hash=transformBoardToString(board_state);
+        System.out.println(board_hash);
         return;
+    }
+    public static String transformBoardToString(char[][] board){
+        char element;
+
+        String boardAsString = "";
+        for (int i = 0; i <8; i++) {
+            for (int j = 0; j <8; j++) {
+                element = board[i][j];
+                switch (element){
+                    case '.':
+                        boardAsString += "  ";
+                        break;
+                    case 'w':
+                        boardAsString+='R';
+                        break;
+                    case 'b':
+                        boardAsString+='B';
+                        break;
+                }
+            }
+            boardAsString+="n";
+        }
+        return boardAsString;
     }
     
     public String[] vec_string() {
