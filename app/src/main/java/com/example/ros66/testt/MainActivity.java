@@ -100,8 +100,7 @@ public class MainActivity extends Activity {
 			moveCheckerOnBoard(capturedCheckerPosition, (String) view.getTag());
 			checkerIsCaptured = 0;
 			// JsonObjectRequest.java
-			String URL ="http://ec2-52-91-220-231.compute-1.amazonaws.com:8000/move?board=" + URLEncoder.encode(CheckersBoard.board_hash, "UTF-8");
-			System.out.println(URL);
+			String URL ="http://ec2-52-91-220-231.compute-1.amazonaws.com:8000/move?board=\"" + CheckersBoard.board_hash.replace(" ", "%20") + "\"";
 
 			RequestQueue queue = Volley.newRequestQueue(this);
 			//RequestQueue mRequestQueue = Volley.newRequestQueue(this);
