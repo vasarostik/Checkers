@@ -19,7 +19,7 @@ public class CheckersBoard {
     
 
     
-   
+
     public CheckersBoard() {
     	int a = 0;
         int odds = 1;
